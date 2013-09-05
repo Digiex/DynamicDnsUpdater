@@ -34,7 +34,7 @@
             // eventLog
             // 
             this.eventLog.Log = "Application";
-            this.eventLog.Source = "DynDNSUpdater";
+            this.eventLog.Source = "DynamicDnsUpdaterService";
             // 
             // DynamicDnsUpdaterService
             // 
