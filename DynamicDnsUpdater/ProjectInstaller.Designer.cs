@@ -28,9 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
+            this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
+            // 
+            // serviceProcessInstaller1
+            // 
+            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.NetworkService;
+            this.serviceProcessInstaller1.Password = null;
+            this.serviceProcessInstaller1.Username = null;
+            // 
+            // serviceInstaller1
+            // 
+            this.serviceInstaller1.Description = "Updates configured DynDNS service(s)";
+            this.serviceInstaller1.DisplayName = "Dynamic DNS Updater Service";
+            this.serviceInstaller1.ServiceName = "DynamicDnsUpdaterService";
+            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+            // 
+            // ProjectInstaller
+            // 
+            this.Installers.AddRange(new System.Configuration.Install.Installer[] {
+            this.serviceProcessInstaller1,
+            this.serviceInstaller1});
+
         }
 
         #endregion
+
+        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
     }
 }
