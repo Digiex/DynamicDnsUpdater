@@ -30,7 +30,7 @@ namespace DynamicDnsUpdater
         }
 
         public List<DynDnsHost> Hosts = new List<DynDnsHost>();
-        public int UpdateIntervalMins = 1440; //Defaulting to update every 24h
+        public double UpdateIntervalMins = 1440; //Defaulting to update every 24h
         public string LogFile = "DynDNSlog.txt";
 
         //This method is used to raise event during start of service
@@ -39,37 +39,40 @@ namespace DynamicDnsUpdater
             //add this line to text file during start of service
             WriteLog("Starting service");
 
-            string lsbkey = @"Software\Digiex\DynDNSUpdater";
-            RegistryKey regkey = Registry.LocalMachine.OpenSubKey(lsbkey, false);
-
-            try
+            using (RegistryKey regkey = Registry.LocalMachine.OpenSubKey(@"Software\Digiex\DynDNSUpdater", false))
             {
-                var hostskey = regkey.OpenSubKey("hosts");
-                foreach (var host in hostskey.GetSubKeyNames())
+                try
                 {
-                    var hostkey = hostskey.OpenSubKey(host);
-                    Hosts.Add(new DynDnsHost()
+                    using (var hostskey = regkey.OpenSubKey("Hosts"))
                     {
-                        Hostname = hostkey.GetValue("Hostname", host).ToString(),
-                        UpdateUrl = hostkey.GetValue("UpdateUrl").ToString(),
-                        Username = hostkey.GetValue("Username").ToString(),
-                        Password = hostkey.GetValue("Password").ToString(),
-                    });
+                        foreach (var host in hostskey.GetSubKeyNames())
+                        {
+                            using (var hostkey = hostskey.OpenSubKey(host))
+                            {
+                                Hosts.Add(new DynDnsHost()
+                                {
+                                    Hostname = hostkey.GetValue("Hostname", host).ToString(),
+                                    UpdateUrl = hostkey.GetValue("UpdateUrl").ToString(),
+                                    Username = hostkey.GetValue("Username").ToString(),
+                                    Password = Encoding.UTF8.GetString((byte[])hostkey.GetValue("Password")),
+                                });
+                            }
+                        }
+                    }
+                    UpdateIntervalMins = double.Parse(regkey.GetValue("UpdateIntervalMins", UpdateIntervalMins).ToString());
+                    LogFile = regkey.GetValue("LogFile", LogFile).ToString();
                 }
-                UpdateIntervalMins = int.Parse(regkey.GetValue("UpdateIntervalMins", UpdateIntervalMins).ToString());
-                LogFile = regkey.GetValue("LogFile", LogFile).ToString();
+                catch (NullReferenceException ne)
+                {
+                    WriteLog(@"Aborting Service, Configuration not stored properly in registry : " + ne.Message);
+                    this.Stop();
+                    return;
+                }
             }
-            catch (NullReferenceException ne)
-            {
-                WriteLog(@"Aborting Service, Configuration not stored properly in registry : " + ne.Message);
-                this.Stop();
-                return;
-            }
-
             //handle Elapsed event
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
             //This statement is used to set interval to 1 minute (= 60,000 milliseconds)
-            timer.Interval = UpdateIntervalMins;
+            timer.Interval = UpdateIntervalMins * 60000;
             //enabling the timer
             timer.Enabled = true;
         }
