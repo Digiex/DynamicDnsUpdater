@@ -133,6 +133,10 @@ namespace DynamicDnsUpdaterConfig
                     regkey.SetValue("LogFile", logPathBox.Text);
                     using (var hostskey = regkey.CreateSubKey("Hosts"))
                     {
+                        foreach (var delkey in hostskey.GetSubKeyNames())
+                        {
+                            hostskey.DeleteSubKeyTree(delkey, false);
+                        }
                         foreach (var h in dynDnsListBox.Items)
                         {
                             var host = (DynDnsHost)h;
@@ -151,6 +155,11 @@ namespace DynamicDnsUpdaterConfig
             {
                 MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void updateUrlBox_TextChanged(object sender, EventArgs e)
+        {
+            updateUrlPreviewBox.Text = string.Format(updateUrlBox.Text, hostnameBox.Text, usernameBox.Text);
         }
     }
 }

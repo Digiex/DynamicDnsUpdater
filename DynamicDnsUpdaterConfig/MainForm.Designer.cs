@@ -46,12 +46,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.updateUrlPreviewBox = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.logPathBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.browseButton = new System.Windows.Forms.Button();
+            this.updateUrlPreviewBox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,6 +170,7 @@
             this.updateUrlBox.Name = "updateUrlBox";
             this.updateUrlBox.Size = new System.Drawing.Size(164, 20);
             this.updateUrlBox.TabIndex = 7;
+            this.updateUrlBox.TextChanged += new System.EventHandler(this.updateUrlBox_TextChanged);
             // 
             // label3
             // 
@@ -217,14 +218,6 @@
             this.label7.Text = "In Update Url {0} will be replaced\r\nwith the hostname and {1} will be\r\nreplaced w" +
     "ith the username";
             // 
-            // updateUrlPreviewBox
-            // 
-            this.updateUrlPreviewBox.Enabled = false;
-            this.updateUrlPreviewBox.Location = new System.Drawing.Point(9, 218);
-            this.updateUrlPreviewBox.Name = "updateUrlPreviewBox";
-            this.updateUrlPreviewBox.Size = new System.Drawing.Size(164, 20);
-            this.updateUrlPreviewBox.TabIndex = 13;
-            // 
             // saveButton
             // 
             this.saveButton.Location = new System.Drawing.Point(348, 313);
@@ -269,6 +262,15 @@
             this.browseButton.Text = "Browse...";
             this.browseButton.UseVisualStyleBackColor = true;
             this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+            // 
+            // updateUrlPreviewBox
+            // 
+            this.updateUrlPreviewBox.Location = new System.Drawing.Point(9, 218);
+            this.updateUrlPreviewBox.Name = "updateUrlPreviewBox";
+            this.updateUrlPreviewBox.ReadOnly = true;
+            this.updateUrlPreviewBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.updateUrlPreviewBox.Size = new System.Drawing.Size(164, 20);
+            this.updateUrlPreviewBox.TabIndex = 13;
             // 
             // MainForm
             // 
@@ -315,12 +317,12 @@
         private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.TextBox usernameBox;
         private System.Windows.Forms.TextBox hostnameBox;
-        private System.Windows.Forms.TextBox updateUrlPreviewBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.TextBox logPathBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button browseButton;
+        private System.Windows.Forms.TextBox updateUrlPreviewBox;
     }
 }
 
