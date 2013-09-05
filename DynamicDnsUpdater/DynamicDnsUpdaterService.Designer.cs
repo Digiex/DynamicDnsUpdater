@@ -28,14 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.eventLog = new System.Diagnostics.EventLog();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
+            // 
+            // eventLog
+            // 
+            this.eventLog.Log = "Application";
+            this.eventLog.Source = "DynDNSUpdater";
             // 
             // DynamicDnsUpdaterService
             // 
             this.ServiceName = "DynamicDnsUpdaterService";
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
 
         }
 
         #endregion
+
+        private System.Diagnostics.EventLog eventLog;
 
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="DynamicDnsUpdaterService.Designer.cs">
       <DependentUpon>DynamicDnsUpdaterService.cs</DependentUpon>
     </Compile>
+    <Compile Include="DynDnsHost.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
